@@ -1,0 +1,30 @@
+config {
+    type: "table",
+    description: "Isere museum table",
+    //schema:"lab2_musee",
+    //name:"isere",
+    columns: {
+        identifiant_musee: "museum identifier",
+        region_administrative: "museum administrative region",
+        departement: "museum department",
+        commune: "museum municipality",
+        nom_officiel_du_musee: "museum officiel name",
+        adresse: "museum address",
+        lieu: "museum location",
+        code_postal: "postal addresse",
+        telephone: "phone number",
+        url: "web site url",
+        latitude: "location latitude",
+        longitude: "location longitude",
+        ref_deps: "reference deps"
+    },
+    tags: ["STAGING"],
+    //disabled: true
+}
+
+SELECT
+  *
+FROM
+  ${ref("list_musees")}
+WHERE
+  departement="Isère"

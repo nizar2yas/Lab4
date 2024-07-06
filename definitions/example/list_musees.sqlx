@@ -1,0 +1,22 @@
+config {
+    type: "operations",
+    hasOutput: true,
+    schema: "presentation_lab2"
+}
+
+LOAD data overwrite ${self()} (
+identifiant_musee	STRING,
+region_administrative	STRING,
+departement	STRING,
+commune	STRING,
+nom_officiel_du_musee	STRING,
+adresse	STRING,
+lieu	STRING,
+code_postal	STRING,
+telephone	STRING,
+url	STRING,
+latitude	STRING,
+longitude	STRING,
+ref_deps	STRING
+)
+FROM FILES(format ="CSV", uris = ["gs://formation-data-input/liste-officielle-museesdf-20220127.csv"])

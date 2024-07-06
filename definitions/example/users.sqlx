@@ -1,0 +1,5 @@
+config {
+    type: "declaration",
+    database: "formation-dataform",
+    schema: "presentation_lab2"
+}

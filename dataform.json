@@ -1,0 +1,7 @@
+{
+    "defaultDatabase":"formation-dataform",
+    "defaultSchema": "lab3",
+    "assertionSchema": "lab3_assertions",
+    "warehouse": "bigquery",
+    "defaultLocation": "europe-west1"
+}

@@ -1,7 +1,7 @@
 config {
     type: "operations",
     hasOutput: true,
-    schema: "presentation_lab2"
+    schema: "input_data"
 }
 
 LOAD data overwrite ${self()} (
@@ -19,4 +19,4 @@ latitude	STRING,
 longitude	STRING,
 ref_deps	STRING
 )
-FROM FILES(format ="CSV", uris = ["gs://formation-data-input/liste-officielle-museesdf-20220127.csv"])
+FROM FILES(format ="CSV", uris = ["gs://dataform_input_data/liste-officielle-museesdf-20220127-data.csv"])

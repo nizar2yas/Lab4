@@ -2,27 +2,36 @@ config {
     type: "table",
     description: "Adultes users table",
     columns: {
-        id: "user's identifier",
-        first_name: "user's first name",
-        last_name: "user's last name",
-        email: "user's email",
-        gender: "user's gender",
-        birth_date: "user's birth date"
+        id: "User's identifier",
+        first_name: "User's first name",
+        last_name: "User's last name",
+        email: "User's email",
+        gender: "User's gender",
+        birth_date: "User's birth date",
+        creation_timestamp: "Users's creation timestamp",
+        update_timestamp: "Users's data update timestamp"
     },
-    tags:["STAGING"],
-    bigquery :{
-        labels:{
-            "type":"staging"
+    tags: ["STAGING"],
+    bigquery: {
+        labels: {
+            "type": "staging"
         },
-        partitionBy: "birth_date",
-        requirePartitionFilter : true,
+        partitionBy: "update_timestamp",
+        requirePartitionFilter: true,
         clusterBy: ["gender"]
     }
 }
 
+WITH
+  cte AS (
+  SELECT
+    * EXCEPT(update_timestamp),
+    DATE(update_timestamp) AS update_timestamp
+  FROM
+    ${ref("users")}
+  WHERE
+    DATE_DIFF(CURRENT_DATE(),DATE(birth_date),YEAR)>=18 )
 SELECT
   *
 FROM
-  ${ref("users")}
-WHERE
-  DATE_DIFF(CURRENT_DATE(),birth_Date,YEAR)>=18
+  cte

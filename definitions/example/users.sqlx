@@ -1,5 +1,5 @@
 config {
     type: "declaration",
-    database: "formation-dataform",
-    schema: "presentation_lab2"
+    database: "dataform-training-429018",
+    schema: "input_data"
 }

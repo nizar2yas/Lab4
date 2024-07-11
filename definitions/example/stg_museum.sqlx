@@ -23,8 +23,19 @@ config {
 }
 
 SELECT
-  *
+  SAFE_CAST(identifiant_musee AS STRING) AS identifiant_musee,
+  SAFE_CAST(region_administrative AS STRING) AS region_administrative,
+  SAFE_CAST(departement AS STRING) AS departement,
+  SAFE_CAST(commune AS STRING) AS commune,
+  SAFE_CAST(nom_officiel_du_musee AS STRING) AS nom_officiel_du_musee,
+  SAFE_CAST(adresse AS STRING) AS adresse,
+  SAFE_CAST(lieu AS STRING) AS lieu,
+  SAFE_CAST(code_postal AS INT64) AS code_postal,
+  SAFE_CAST(telephone AS STRING) AS telephone,
+  SAFE_CAST(url AS STRING) AS url,
+  SAFE_CAST(latitude AS FLOAT64) AS latitude,
+  SAFE_CAST(longitude AS FLOAT64) AS longitude,
+  SAFE_CAST(ref_deps AS FLOAT64) AS ref_deps
 FROM
   ${ref("list_musees")}
-WHERE
-  departement="Isère"
+QUALIFY row_number() over(partition By identifiant_musee)=1

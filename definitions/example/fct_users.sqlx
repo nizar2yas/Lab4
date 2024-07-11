@@ -1,5 +1,5 @@
 config {
-    type: "table",
+    type: "incremental",
     description: "Adultes users table",
     columns: {
         id: "User's identifier",
@@ -11,27 +11,24 @@ config {
         creation_timestamp: "Users's creation timestamp",
         update_timestamp: "Users's data update timestamp"
     },
-    tags: ["STAGING"],
+    tags: ["FACT"],
     bigquery: {
         labels: {
-            "type": "staging"
+            "type": "fact"
         },
-        partitionBy: "update_timestamp",
+        partitionBy: "DATE(update_timestamp)",
         requirePartitionFilter: true,
         clusterBy: ["gender"]
     }
 }
 
-WITH
-  cte AS (
-  SELECT
-    * EXCEPT(update_timestamp),
-    DATE(update_timestamp) AS update_timestamp
-  FROM
-    ${ref("users")}
-  WHERE
-    DATE_DIFF(CURRENT_DATE(),DATE(birth_date),YEAR)>=18 )
 SELECT
   *
 FROM
-  cte
+  ${ref("stg_users")}
+  ${
+      when(incremental(),
+          `WHERE TIMESTAMP_TRUNC(update_timestamp, DAY) >= TIMESTAMP_SUB(current_timestamp(), INTERVAL 1 DAY)`,
+          `WHERE TIMESTAMP_TRUNC(update_timestamp, DAY) > timestamp("1970-01-01")`
+      )
+  }

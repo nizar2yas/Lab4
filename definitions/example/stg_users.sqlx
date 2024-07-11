@@ -1,0 +1,35 @@
+config {
+    type: "table",
+    description: "Adultes users table",
+    columns: {
+        id: "User's identifier",
+        first_name: "User's first name",
+        last_name: "User's last name",
+        email: "User's email",
+        gender: "User's gender",
+        birth_date: "User's birth date",
+        creation_timestamp: "Users's creation timestamp",
+        update_timestamp: "Users's data update timestamp"
+    },
+    tags: ["STAGING"],
+    bigquery: {
+        labels: {
+            "type": "staging"
+        },
+        partitionBy: "Date(update_timestamp)",
+        requirePartitionFilter: true,
+        clusterBy: ["gender"]
+    }
+}
+
+SELECT
+  CAST(id AS INT64) AS id,
+  CAST(first_name AS String) AS first_name,
+  CAST(last_name AS String) AS last_name,
+  CAST(email AS String) AS email,
+  CAST(gender AS String) AS gender,
+  CAST(birth_date AS date) AS birth_date,
+  CAST(creation_timestamp AS timestamp) AS creation_timestamp,
+  CAST(update_timestamp AS timestamp) AS update_timestamp,
+FROM
+  ${ref("users")}
